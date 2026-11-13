@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thyme Machine, private prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="wordmark"><span class="leaf">✦</span> thyme machine</div>
+      <span class="status">private prototype</span>
+    </header>
+
+    <section class="hero" id="onboarding">
+      <p class="eyebrow">A little taste. A little fate.</p>
+      <h1>Find someone<br><em>worth making time for.</em></h1>
+      <p class="lede">A dating ritual for people who believe the best conversations start with manouche, olive oil, and a little extra zaatar.</p>
+      <button class="primary" data-show="taste">Build my Taste Map <span>→</span></button>
+      <p class="microcopy">Lebanese at heart. Open to good taste.</p>
+    </section>
+
+    <section class="panel hidden" id="taste">
+      <div class="panel-head"><span class="step">01 / 03</span><span class="skip">your taste map</span></div>
+      <div class="quick-signup">
+        <strong>Get in quickly.</strong>
+        <span>Bring your photos only if you want to.</span>
+        <div class="signup-actions"><button class="social" type="button">Continue with Instagram</button><button class="social" type="button">Continue with Facebook</button><button class="email" type="button">Use email instead</button></div>
+        <small>Prototype buttons only. Social access would require your clear permission.</small>
+      </div>
+      <h2>How do you order your time?</h2>
+      <p class="muted">There is no wrong answer. Only questionable zaatar ratios.</p>
+      <div class="choices" data-choice-group>
+        <button data-choice="Classic zaatar">Classic zaatar <small>balanced, always right</small></button>
+        <button data-choice="Extra zaatar">Extra zaatar <small>commitment is attractive</small></button>
+        <button data-choice="Surprise me">Surprise me <small>keep the table interesting</small></button>
+      </div>
+      <p class="question-label">What are you looking for right now?</p>
+      <div class="mini-choices" data-choice-group>
+        <button data-choice="A real relationship">A real relationship</button>
+        <button data-choice="Good conversation">Good conversation</button>
+        <button data-choice="Let’s see">Let’s see where it goes</button>
+      </div>
+      <button class="text-button next hidden" data-show="discovery">Continue <span>→</span></button>
+    </section>
+
+    <section class="panel hidden" id="discovery">
+      <div class="panel-head"><span class="step">table matches</span><span class="skip">Tuesday, 3:14 pm</span></div>
+      <h2>One good match beats a hundred swipes.</h2>
+      <article class="profile-card">
+        <div class="avatar">N</div>
+        <div class="profile-info"><h3>Nour, 29</h3><p>Miami · makes time for live music</p></div>
+        <div class="score">92%<small>taste sync</small></div>
+        <div class="signals"><span>extra zaatar</span><span>olive oil loyalist</span><span>late night walks</span></div>
+        <p class="match-note">You both chose “Extra zaatar” and think the best first dates should accidentally last three hours.</p>
+        <div class="starter"><span>conversation starter</span><strong>What is the most controversial thing you put on a manouche?</strong><button type="button">Send this opener ↗</button></div>
+        <div class="actions"><button class="ghost">Pass for now</button><button class="primary small" data-show="paywall">Make time <span>→</span></button></div>
+      </article>
+    </section>
+
+    <section class="panel hidden" id="paywall">
+      <div class="paywall-mark">✦</div>
+      <p class="eyebrow">Your table is waiting</p>
+      <h2>Make more time for good people.</h2>
+      <p class="muted">Thyme Plus gives you more daily Table Matches, advanced Taste Map filters, rewind, and a view of who already liked you.</p>
+      <div class="price"><strong>$9.99</strong><span>/ month</span></div>
+      <button class="primary full">Start Thyme Plus <span>→</span></button>
+      <p class="microcopy">Prototype only. No payment is active.</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
