@@ -1,10 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Animated, PanResponder, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   const [started, setStarted] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [plus, setPlus] = useState(false);
+  const position = new Animated.ValueXY();
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dx) > 8,
+    onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], { useNativeDriver: false }),
+    onPanResponderRelease: (_, gesture) => {
+      if (Math.abs(gesture.dx) > 100) {
+        setLiked(gesture.dx > 0);
+        Animated.timing(position, { toValue: { x: gesture.dx > 0 ? 500 : -500, y: gesture.dy }, duration: 220, useNativeDriver: false }).start(() => position.setValue({ x: 0, y: 0 }));
+      } else Animated.spring(position, { toValue: { x: 0, y: 0 }, useNativeDriver: false }).start();
+    },
+  });
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -15,19 +27,26 @@ export default function App() {
         <Text style={styles.body}>A Lebanese at heart dating ritual built around manouche, olive oil, zaatar, and good conversation.</Text>
         <Pressable style={styles.primary} onPress={() => setStarted(true)}><Text style={styles.primaryText}>Build my Taste Map  →</Text></Pressable>
         <Text style={styles.note}>Lebanese at heart. Open to good taste.</Text>
+      </View> : plus ? <View style={styles.hero}>
+        <Text style={styles.kicker}>THYME PLUS</Text>
+        <Text style={styles.title}>Make more time for good people.</Text>
+        <Text style={styles.body}>More Table Matches, advanced Taste Map filters, rewind, and a view of who already liked you.</Text>
+        <Text style={styles.price}>$9.99 <Text style={styles.month}>/ month</Text></Text>
+        <Pressable style={styles.primary} onPress={() => setPlus(false)}><Text style={styles.primaryText}>Continue in prototype  →</Text></Pressable>
+        <Text style={styles.note}>Payment is inactive in this prototype.</Text>
       </View> : <View style={styles.discovery}>
         <Text style={styles.kicker}>TABLE MATCH 01</Text>
         <Text style={styles.subtitle}>One good match beats a hundred swipes.</Text>
-        <View style={styles.card}>
+        <Animated.View {...panResponder.panHandlers} style={[styles.card, { transform: [{ translateX: position.x }, { translateY: position.y }, { rotate: position.x.interpolate({ inputRange: [-300, 0, 300], outputRange: ['-10deg', '0deg', '10deg'] }) }] }]}>
           <View style={styles.avatar}><Text style={styles.avatarText}>N</Text></View>
           <Text style={styles.name}>Nour, 29</Text>
           <Text style={styles.location}>Miami · makes time for live music</Text>
           <View style={styles.pills}><Text style={styles.pill}>extra zaatar</Text><Text style={styles.pill}>olive oil loyalist</Text></View>
           <Text style={styles.reason}>You both think the best first dates should accidentally last three hours.</Text>
           <View style={styles.starter}><Text style={styles.starterLabel}>CONVERSATION STARTER</Text><Text style={styles.starterText}>What is the most controversial thing you put on a manouche?</Text></View>
-        </View>
+        </Animated.View>
         <View style={styles.actions}><Pressable style={styles.pass} onPress={() => setLiked(false)}><Text>Pass for now</Text></Pressable><Pressable style={styles.primary} onPress={() => setLiked(true)}><Text style={styles.primaryText}>{liked ? 'Made time ✓' : 'Make time  →'}</Text></Pressable></View>
-        <Text style={styles.note}>Three free table matches today · Thyme Plus unlocks more.</Text>
+          <Pressable onPress={() => setPlus(true)}><Text style={styles.note}>Three free table matches today · Thyme Plus unlocks more.</Text></Pressable>
       </View>}
     </SafeAreaView>
   );
@@ -42,6 +61,7 @@ const styles = StyleSheet.create({
   title: { color: '#fffaf0', fontSize: 48, lineHeight: 48, letterSpacing: -1.8, marginBottom: 24 }, subtitle: { color: '#fffaf0', fontSize: 31, lineHeight: 34, letterSpacing: -1, marginBottom: 24 },
   body: { color: '#d6dfcf', fontSize: 18, lineHeight: 26, marginBottom: 30 }, primary: { backgroundColor: '#d9e86c', borderRadius: 4, paddingVertical: 15, paddingHorizontal: 17, alignSelf: 'flex-start' }, primaryText: { color: '#173d31', fontWeight: '700', fontSize: 14 },
   note: { color: '#9fb1a5', fontSize: 11, letterSpacing: 1.1, marginTop: 18, textTransform: 'uppercase' }, card: { backgroundColor: '#fffaf0', borderRadius: 6, padding: 22, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 14, shadowOffset: { width: 0, height: 7 } },
+  price: { color: '#fffaf0', fontSize: 48, marginBottom: 28 }, month: { color: '#b7c6a3', fontSize: 15 },
   avatar: { width: 58, height: 58, borderRadius: 29, backgroundColor: '#e78b6b', alignItems: 'center', justifyContent: 'center', marginBottom: 13 }, avatarText: { color: '#fffaf0', fontSize: 30 }, name: { color: '#23332d', fontSize: 25, marginBottom: 4 }, location: { color: '#69756d', fontSize: 13, marginBottom: 18 },
   pills: { flexDirection: 'row', flexWrap: 'wrap', gap: 7, marginBottom: 16 }, pill: { backgroundColor: '#eef1d6', color: '#36503f', borderRadius: 15, paddingVertical: 8, paddingHorizontal: 10, fontSize: 10, textTransform: 'uppercase' }, reason: { color: '#23332d', fontSize: 17, lineHeight: 24, marginBottom: 18 },
   starter: { borderLeftWidth: 3, borderLeftColor: '#e78b6b', backgroundColor: '#f1eddc', padding: 13 }, starterLabel: { color: '#b9674e', fontSize: 9, letterSpacing: 1.2, marginBottom: 6 }, starterText: { color: '#23332d', fontSize: 16, lineHeight: 21 },
